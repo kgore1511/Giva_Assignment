@@ -1,0 +1,19 @@
+{
+  "name": "giva_assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon covid.js server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.1",
+    "redis": "^4.0.3",
+    "sequelize": "^6.15.0"
+  }
+}
