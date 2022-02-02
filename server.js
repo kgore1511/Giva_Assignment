@@ -3,7 +3,8 @@ const app=express();
 const dbConfig=require('./config/db.config');
 const covid=require('./model/covid')
 const redis=require('redis');
-
+const Sequelize=require('sequelize')
+const Op=Sequelize.Op
 dbConfig.authenticate().then(()=> {
     console.log("Connected to postgre server")
 }).catch(err=> {
@@ -18,6 +19,26 @@ redisClient.connect().then(()=> {
     console.log(err)
 })
 
+// search state with similiar syntax
+app.get('/searchState', async(req,res) => {
+    var searchKeyword=req.query.searchquery || "";
+    if(searchKeyword.length>0)searchKeyword=searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1).toLowerCase();
+    try {
+        var states=await covid.findAll({
+            attributes: [[Sequelize.fn('DISTINCT',Sequelize.col('State')),'state']],
+            where: {
+                State: {
+                    [Op.startsWith]:searchKeyword.trim()
+                }
+            }
+        })
+        res.status(200).send(states)
+    }catch(err) {
+        console.log(err);
+    }
+})
+
+// search by state name
 app.get('/search', async (req,res) => {
     var searchByKeyword=req.query.searchquery;
     try{

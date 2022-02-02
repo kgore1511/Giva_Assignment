@@ -19,7 +19,7 @@ var covid=db.define('covid', {
 },
     {
     timestamps: false
-    }
+    },
 )
 
 covid.sync({force:false}).then(function() {
