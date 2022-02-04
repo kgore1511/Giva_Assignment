@@ -21,8 +21,7 @@ redisClient.connect().then(()=> {
 
 // search state with similiar syntax
 app.get('/searchState', async(req,res) => {
-    var searchKeyword=req.query.searchquery || "";
-    if(searchKeyword.length>0)searchKeyword=searchKeyword.charAt(0).toUpperCase() + searchKeyword.slice(1).toLowerCase();
+    var searchKeyword=req.query.searchquery.toLowerCase() || "";
     try {
         var states=await covid.findAll({
             attributes: [[Sequelize.fn('DISTINCT',Sequelize.col('State')),'state']],
@@ -40,7 +39,7 @@ app.get('/searchState', async(req,res) => {
 
 // search by state name
 app.get('/search', async (req,res) => {
-    var searchByKeyword=req.query.searchquery;
+    var searchByKeyword=req.query.searchquery.toLowerCase() || "";
     try{
     var data=await redisClient.get(searchByKeyword)
     
